@@ -1,0 +1,69 @@
+# CI for kameas-ai/homebrew-tap: copy this file to .github/workflows/ci.yml
+# in the tap repository (see tap-README.md). Kept in kenaz-plugin-release so
+# the release pipeline and the tap's checks are reviewed together.
+#
+# Every PR (the release pipeline's "kenaz <version>" PRs included) must pass
+# brew style, brew audit --strict --online, a sha256 check of both macOS
+# archives and a real install that puts kenaz on PATH. Protect main with the
+# required check "brew style, audit and install"; with auto-merge allowed,
+# kenaz-plugin-release (vars.BREW_AUTO_MERGE=true) asks GitHub to merge the
+# PR only after this check passes.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tap-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  cask:
+    name: brew style, audit and install
+    runs-on: macos-14
+    timeout-minutes: 30
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_ANALYTICS: "1"
+      HOMEBREW_NO_INSTALL_CLEANUP: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v4
+        with: { persist-credentials: false }
+      - name: Use this checkout as the kameas-ai/tap tap
+        run: |
+          set -euo pipefail
+          T="$(brew --repository)/Library/Taps/kameas-ai/homebrew-tap"
+          mkdir -p "$(dirname "$T")"
+          rm -rf "$T"
+          ln -s "$GITHUB_WORKSPACE" "$T"
+      # Before the first release PR the tap has no cask yet.
+      - name: brew style
+        if: hashFiles('Casks/*.rb') != ''
+        run: brew style --cask Casks/*.rb
+      - name: brew audit (strict, online) and sha256 of every architecture
+        if: hashFiles('Casks/*.rb') != ''
+        run: |
+          set -euo pipefail
+          for f in Casks/*.rb; do
+            c="kameas-ai/tap/$(basename "$f" .rb)"
+            brew audit --cask --strict --online "$c"
+            brew fetch --cask --force --arch=all "$c"
+          done
+      - name: Install kenaz, run it from PATH, uninstall
+        if: hashFiles('Casks/kenaz.rb') != ''
+        run: |
+          set -euo pipefail
+          brew install --cask kameas-ai/tap/kenaz
+          [ "$(command -v kenaz)" = "$(brew --prefix)/bin/kenaz" ] || { echo "::error::kenaz is not on PATH from the cask"; exit 1; }
+          kenaz version --json > "$RUNNER_TEMP/v.json"
+          python3 -c 'import json,sys; p=json.load(open(sys.argv[1])); assert p["flavor"]=="official", p; print(p["version"])' "$RUNNER_TEMP/v.json"
+          codesign --verify --strict --verbose=2 "$(brew --prefix)/bin/kenaz"
+          brew uninstall --cask kenaz
+      - name: livecheck
+        if: hashFiles('Casks/kenaz.rb') != ''
+        run: brew livecheck --cask kameas-ai/tap/kenaz
