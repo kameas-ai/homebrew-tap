@@ -21,7 +21,7 @@ cask "kenaz" do
 
   url "https://downloads.kameas.ai/kenaz-plugin/v#{version}/kenaz_#{version}_darwin_#{arch}.tar.gz"
   name "Kenaz"
-  desc "Connects Claude Code and Codex to Kameas Fleet"
+  desc "Connects Claude Code and Codex to Kameas Fleet (Kenaz, a Kameas AI product)"
   homepage "https://kenaz.kameas.ai/"
 
   # The stable pointer of the download CDN names the current release.
@@ -41,7 +41,9 @@ cask "kenaz" do
   # Licence files ship in the archive (licenses/LICENSE, LICENSE-APACHE,
   # NOTICE, THIRD_PARTY_NOTICES) and inside the binary: `kenaz licenses`.
   caveats <<~EOS
-    Official builds are licensed under the Kameas Client Software License.
+    Kenaz for Claude Code and Codex is in early access, and this is a pre-release.
+    Official builds are licensed under the Kameas Client Software License:
+    https://kenaz.kameas.ai/client-license (run `kenaz licenses` for open-source notices).
     Claude and Claude Code are trademarks of Anthropic, PBC. OpenAI and Codex are trademarks of OpenAI.
     Kenaz and Kameas are trademarks of Kameas AI, Inc. Kenaz for Claude Code and Codex is an independent
     product of Kameas AI, Inc. and is not affiliated with, endorsed or sponsored by Anthropic or OpenAI.
