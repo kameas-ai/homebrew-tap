@@ -44,7 +44,10 @@ jobs:
       # Before the first release PR the tap has no cask yet.
       - name: brew style
         if: hashFiles('Casks/*.rb') != ''
-        run: brew style --cask Casks/*.rb
+        # Homebrew rejects cask files by path outside a tap; name them through the tap.
+        run: |
+          set -euo pipefail
+          for f in Casks/*.rb; do brew style --cask "kameas-ai/tap/$(basename "$f" .rb)"; done
       - name: brew audit (strict, online) and sha256 of every architecture
         if: hashFiles('Casks/*.rb') != ''
         run: |
