@@ -1,7 +1,7 @@
 # Cask for kameas-ai/homebrew-tap (spec 012 FR-7). Rendered by
 # scripts/render-cask.sh in the optional homebrew job of
-# .github/workflows/publish.yml, which substitutes 0.5.0,
-# 51c1480681c5b47c43a728d6b07400512efb9a687862623ad2e16447ab41cf50 and 23585373eb44d64319cc603adf04535d0d77c4df57ab5b324771b7184ee75bfb from the candidate's verified
+# .github/workflows/publish.yml, which substitutes 0.6.0,
+# 52001a85295a580773659521d568ba61e0788d579b0980f1cea4c3cac288aac2 and 0b77680e756ac6d960f4e7948d60c195c5cffef365b74d75bea2749bab6b888c from the candidate's verified
 # checksums.txt and opens a PR on the tap. Archives are served from the
 # download CDN. The executable is Developer ID signed + notarized (FR-4) and
 # identical to every other channel's.
@@ -15,9 +15,9 @@
 cask "kenaz" do
   arch arm: "arm64", intel: "amd64"
 
-  version "0.5.0"
-  sha256 arm:   "51c1480681c5b47c43a728d6b07400512efb9a687862623ad2e16447ab41cf50",
-         intel: "23585373eb44d64319cc603adf04535d0d77c4df57ab5b324771b7184ee75bfb"
+  version "0.6.0"
+  sha256 arm:   "52001a85295a580773659521d568ba61e0788d579b0980f1cea4c3cac288aac2",
+         intel: "0b77680e756ac6d960f4e7948d60c195c5cffef365b74d75bea2749bab6b888c"
 
   url "https://downloads.kameas.ai/kenaz-plugin/v#{version}/kenaz_#{version}_darwin_#{arch}.tar.gz"
   name "Kenaz"
@@ -40,6 +40,11 @@ cask "kenaz" do
 
   # Licence files ship in the archive (licenses/LICENSE, LICENSE-APACHE,
   # NOTICE, THIRD_PARTY_NOTICES) and inside the binary: `kenaz licenses`.
+  # desc and caveats are Kameas's approved listing text: use them exactly.
+  # The first caveats line is for pre-releases (published with
+  # skip_conformance). In the first release published without
+  # skip_conformance, replace it with "Kenaz for Claude Code and Codex is in
+  # early access." until GA.
   caveats <<~EOS
     Kenaz for Claude Code and Codex is in early access, and this is a pre-release.
     Official builds are licensed under the Kameas Client Software License:
