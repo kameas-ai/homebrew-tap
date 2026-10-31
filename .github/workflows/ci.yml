@@ -25,7 +25,7 @@ concurrency:
 jobs:
   cask:
     name: brew style, audit and install
-    runs-on: macos-15
+    runs-on: macos-latest
     timeout-minutes: 30
     env:
       HOMEBREW_NO_AUTO_UPDATE: "1"
