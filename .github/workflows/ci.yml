@@ -25,7 +25,7 @@ concurrency:
 jobs:
   cask:
     name: brew style, audit and install
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 30
     env:
       HOMEBREW_NO_AUTO_UPDATE: "1"
@@ -41,6 +41,8 @@ jobs:
           mkdir -p "$(dirname "$T")"
           rm -rf "$T"
           ln -s "$GITHUB_WORKSPACE" "$T"
+          # Newer Homebrew loads casks only from taps the user trusts.
+          if brew help trust >/dev/null 2>&1; then brew trust kameas-ai/tap; fi
       # Before the first release PR the tap has no cask yet.
       - name: brew style
         if: hashFiles('Casks/*.rb') != ''
