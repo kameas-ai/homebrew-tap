@@ -1,7 +1,7 @@
 # Cask for kameas-ai/homebrew-tap (spec 012 FR-7). Rendered by
 # scripts/render-cask.sh in the optional homebrew job of
-# .github/workflows/publish.yml, which substitutes 0.9.0,
-# 199cf5c4c8382b58ec8365ae19d33e30a14a9fc046cf7f7af1397bd78a605ec4 and a28e3d8e70b3aaf7c43cb71add3638a72e5ad10dc60eb99eec1c2ea5c90596e7 from the candidate's verified
+# .github/workflows/publish.yml, which substitutes 0.9.2,
+# 397529697b4f244ace4a6a2f3898e1319531a1e117235228eeb6a6b3554691db and e012e993ac2713bdf3678a16990b1f57e88b0fadf12c8f20c869fd8eb7a798c6 from the candidate's verified
 # checksums.txt and opens a PR on the tap. Archives are served from the
 # download CDN. The executable is Developer ID signed + notarized (FR-4) and
 # identical to every other channel's.
@@ -15,9 +15,9 @@
 cask "kenaz" do
   arch arm: "arm64", intel: "amd64"
 
-  version "0.9.0"
-  sha256 arm:   "199cf5c4c8382b58ec8365ae19d33e30a14a9fc046cf7f7af1397bd78a605ec4",
-         intel: "a28e3d8e70b3aaf7c43cb71add3638a72e5ad10dc60eb99eec1c2ea5c90596e7"
+  version "0.9.2"
+  sha256 arm:   "397529697b4f244ace4a6a2f3898e1319531a1e117235228eeb6a6b3554691db",
+         intel: "e012e993ac2713bdf3678a16990b1f57e88b0fadf12c8f20c869fd8eb7a798c6"
 
   url "https://downloads.kameas.ai/kenaz-plugin/v#{version}/kenaz_#{version}_darwin_#{arch}.tar.gz"
   name "Kenaz"
